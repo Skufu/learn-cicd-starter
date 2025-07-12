@@ -19,5 +19,11 @@ func GetAPIKey(headers http.Header) (string, error) {
 		return "", errors.New("malformed authorization header")
 	}
 
-	return splitAuth[1], nil
+	// Check if the API key part is empty or just whitespace
+	apiKey := strings.TrimSpace(splitAuth[1])
+	if apiKey == "" {
+		return "", errors.New("malformed authorization header")
+	}
+
+	return apiKey, nil
 }
