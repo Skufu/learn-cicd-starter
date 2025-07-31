@@ -38,3 +38,6 @@ jobs:
       - name: Build and push Docker image
         run: |
           gcloud builds submit --tag ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_REPOSITORY }}/${{ secrets.GCP_IMAGE }}:${{ github.sha }} .
+
+      - name: Deploy to Cloud Run
+        run: gcloud run deploy notely --image ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_REPOSITORY }}/${{ secrets.GCP_IMAGE }}:${{ github.sha }} --region ${{ secrets.GCP_REGION }} --allow-unauthenticated --project ${{ secrets.GCP_PROJECT_ID }} --max-instances=4
